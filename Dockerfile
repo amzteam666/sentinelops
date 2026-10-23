@@ -5,8 +5,8 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-RUN groupadd --system appgroup && \
-    useradd --system --gid appgroup --create-home appuser
+RUN groupadd --system --gid 10001 appgroup && \
+    useradd --system --uid 10001 --gid appgroup --create-home appuser
 
 COPY requirements.txt .
 
