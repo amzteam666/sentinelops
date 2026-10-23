@@ -1,0 +1,67 @@
+name: SentinelOps Container Security
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "Dockerfile"
+      - ".dockerignore"
+      - "app/**"
+      - "requirements.txt"
+      - ".github/workflows/container-security.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "Dockerfile"
+      - ".dockerignore"
+      - "app/**"
+      - "requirements.txt"
+      - ".github/workflows/container-security.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-scan:
+    name: Build, Scan and Generate SBOM
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build SentinelOps image
+        run: |
+          docker build \
+            -t sentinelops-api:ci \
+            .
+
+      - name: Scan image for vulnerabilities
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: image
+          image-ref: sentinelops-api:ci
+          severity: HIGH,CRITICAL
+          format: table
+          exit-code: "1"
+
+      - name: Generate SBOM
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: image
+          image-ref: sentinelops-api:ci
+          format: cyclonedx
+          output: sentinelops-sbom.cdx.json
+          exit-code: "0"
+
+      - name: Upload SBOM artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sentinelops-sbom
+          path: sentinelops-sbom.cdx.json
+          if-no-files-found: warn
+          retention-days: 30
