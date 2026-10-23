@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sentinelops-api-ingress
+spec:
+  podSelector:
+    matchLabels:
+      app: sentinelops-api
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              access: sentinelops-api
+      ports:
+        - protocol: TCP
+          port: 8000
