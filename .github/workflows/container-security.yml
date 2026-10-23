@@ -10,6 +10,7 @@ on:
       - "app/**"
       - "requirements.txt"
       - ".github/workflows/container-security.yml"
+
   pull_request:
     branches:
       - main
@@ -19,6 +20,7 @@ on:
       - "app/**"
       - "requirements.txt"
       - ".github/workflows/container-security.yml"
+
   workflow_dispatch:
 
 permissions:
@@ -31,9 +33,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Build SentinelOps image
+        id: build-image
         run: |
           docker build \
             -t sentinelops-api:ci \
@@ -49,6 +52,7 @@ jobs:
           exit-code: "1"
 
       - name: Generate SBOM
+        if: always() && steps.build-image.outcome == 'success'
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: image
@@ -59,7 +63,7 @@ jobs:
 
       - name: Upload SBOM artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: sentinelops-sbom
           path: sentinelops-sbom.cdx.json
