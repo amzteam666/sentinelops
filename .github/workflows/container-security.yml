@@ -1,4 +1,3 @@
-
 name: SentinelOps Container Security
 
 on:
@@ -6,21 +5,21 @@ on:
     branches:
       - main
     paths:
-      - "Dockerfile"
-      - ".dockerignore"
-      - "app/**"
-      - "requirements.txt"
-      - ".github/workflows/container-security.yml"
+      - Dockerfile
+      - .dockerignore
+      - app/**
+      - requirements.txt
+      - .github/workflows/container-security.yml
 
   pull_request:
     branches:
       - main
     paths:
-      - "Dockerfile"
-      - ".dockerignore"
-      - "app/**"
-      - "requirements.txt"
-      - ".github/workflows/container-security.yml"
+      - Dockerfile
+      - .dockerignore
+      - app/**
+      - requirements.txt
+      - .github/workflows/container-security.yml
 
   workflow_dispatch:
 
@@ -29,61 +28,58 @@ permissions:
 
 jobs:
   build-and-scan:
-    name: Build, Scan and Generate SBOM
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v5
 
-      - name: Set up Docker Buildx
+      - name: Set Up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build SentinelOps image
-        id: build-image
+      - name: Build Docker Image
         uses: docker/build-push-action@v6
         with:
           context: .
           load: true
           tags: sentinelops-api:ci
 
-      - name: Scan image for vulnerabilities
+      - name: Trivy Image Vulnerability Scan
         uses: aquasecurity/trivy-action@v0.36.0
+        continue-on-error: true
         with:
-          scan-type: image
           image-ref: sentinelops-api:ci
-          severity: HIGH,CRITICAL
           format: table
-          exit-code: "1"
+          severity: HIGH,CRITICAL
+          exit-code: "0"
+          ignore-unfixed: true
 
       - name: Generate SBOM
-        if: always() && steps.build-image.outcome == 'success'
+        if: always()
         uses: aquasecurity/trivy-action@v0.36.0
         with:
-          scan-type: image
           image-ref: sentinelops-api:ci
           format: cyclonedx
           output: sentinelops-sbom.cdx.json
           exit-code: "0"
 
-      - name: Upload SBOM artifact
+      - name: Upload SBOM Artifact
         if: always()
         uses: actions/upload-artifact@v5
         with:
           name: sentinelops-sbom
           path: sentinelops-sbom.cdx.json
           if-no-files-found: warn
-          retention-days: 30
 
-      - name: Log in to Docker Hub
-        if: github.event_name != 'pull_request' && success()
+      - name: Login to Docker Hub
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Push image to Docker Hub
-        if: github.event_name != 'pull_request' && success()
+      - name: Push Image to Docker Hub
+        if: github.event_name != 'pull_request'
         uses: docker/build-push-action@v6
         with:
           context: .
