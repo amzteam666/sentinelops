@@ -1,5 +1,9 @@
-from fastapi import FastAPI
 from datetime import datetime, timezone
+from pathlib import Path
+
+from fastapi import FastAPI
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI(
     title="SentinelOps API",
@@ -7,13 +11,19 @@ app = FastAPI(
     version="1.0.0",
 )
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+FRONTEND_DIR = BASE_DIR / "frontend"
 
-@app.get("/")
-def root():
-    return {
-        "application": "SentinelOps API",
-        "status": "running",
-    }
+app.mount(
+    "/static",
+    StaticFiles(directory=FRONTEND_DIR),
+    name="static",
+)
+
+
+@app.get("/", include_in_schema=False)
+def dashboard():
+    return FileResponse(FRONTEND_DIR / "index.html")
 
 
 @app.get("/health")

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080d16">
+    <meta name="description" content="SentinelOps — Secure DevSecOps monitoring dashboard for Kubernetes, container security, and CI/CD.">
+    <title>SentinelOps | Security Operations</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <a class="brand" href="#overview">
+            <span class="brand-icon">S<span>+</span></span>
+            <span class="brand-name">SENTINEL<span>OPS</span><small>SECURITY PLATFORM</small></span>
+        </a>
+
+        <div class="nav-label">WORKSPACE</div>
+        <nav class="navigation">
+            <a class="nav-link active" href="#overview"><span>◈</span> Overview</a>
+            <a class="nav-link" href="#metrics"><span>▥</span> Live Metrics</a>
+            <a class="nav-link" href="#security"><span>⬡</span> Security Center</a>
+            <a class="nav-link" href="#architecture"><span>⌘</span> Architecture</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="system-status">
+                <span class="pulse-dot"></span>
+                <div><strong>Platform Status</strong><small id="sidebar-status">Checking API...</small></div>
+            </div>
+            <div class="sidebar-version">SENTINELOPS <span>v1.0.0</span></div>
+        </div>
+    </aside>
+
+    <main class="main-content" id="overview">
+        <header class="topbar">
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+            <div class="breadcrumb">Workspace <span>/</span> <strong>Overview</strong></div>
+            <div class="topbar-right">
+                <span class="environment"><i></i> LOCAL ENVIRONMENT</span>
+                <div class="avatar">SO</div>
+            </div>
+        </header>
+
+        <section class="welcome-section">
+            <div>
+                <div class="eyebrow"><span class="pulse-dot"></span> DEVSECOPS COMMAND CENTER</div>
+                <h1>Secure every build.<br><span>Protect every deployment.</span></h1>
+                <p class="welcome-copy">Your unified command center for application health, Kubernetes infrastructure and security visibility.</p>
+                <div class="hero-actions">
+                    <a href="#metrics" class="button button-primary">Explore Metrics <span>↗</span></a>
+                    <a href="#security" class="button button-secondary">Security Overview</a>
+                </div>
+            </div>
+            <div class="hero-visual" aria-label="Abstract cybersecurity shield illustration">
+                <div class="orbit orbit-outer"></div>
+                <div class="orbit orbit-inner"></div>
+                <div class="shield">
+                    <div class="shield-core">✓</div>
+                </div>
+                <span class="orbit-tag tag-top">ZERO TRUST</span>
+                <span class="orbit-tag tag-bottom">SECURE BY DESIGN</span>
+                <span class="orbit-node node-one"></span>
+                <span class="orbit-node node-two"></span>
+                <span class="orbit-node node-three"></span>
+            </div>
+        </section>
+
+        <section class="section-block" id="metrics">
+            <div class="section-heading">
+                <div><span class="section-kicker">REAL-TIME VISIBILITY</span><h2>System Overview</h2></div>
+                <span class="refresh-label"><span class="pulse-dot"></span> API health refreshes every 15s</span>
+            </div>
+
+            <div class="metrics-grid">
+                <article class="metric-card">
+                    <div class="metric-top"><span>API HEALTH</span><span class="metric-icon green">⌁</span></div>
+                    <div class="metric-value" id="api-health">Checking<span class="metric-unit"></span></div>
+                    <div class="metric-foot"><span class="status-indicator" id="health-indicator"></span><span id="health-detail">Connecting to API</span></div>
+                    <div class="card-accent green-accent"></div>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top"><span>KUBERNETES PODS</span><span class="metric-icon cyan">⬡</span></div>
+                    <div class="metric-value" id="pod-count">—<span class="metric-unit"> pods</span></div>
+                    <div class="metric-foot"><span class="neutral-dot"></span><span>Cluster metrics integration pending</span></div>
+                    <div class="card-accent cyan-accent"></div>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top"><span>CPU UTILIZATION</span><span class="metric-icon purple">ϟ</span></div>
+                    <div class="metric-value" id="cpu-usage">—<span class="metric-unit">%</span></div>
+                    <div class="metric-foot"><span class="neutral-dot"></span><span>Prometheus integration pending</span></div>
+                    <div class="mini-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top"><span>MEMORY USAGE</span><span class="metric-icon orange">▤</span></div>
+                    <div class="metric-value" id="memory-usage">—<span class="metric-unit"> MiB</span></div>
+                    <div class="metric-foot"><span class="neutral-dot"></span><span>Prometheus integration pending</span></div>
+                    <div class="memory-track"><span></span></div>
+                </article>
+            </div>
+            <p class="data-note">Only API health is currently queried from the application. Other infrastructure metrics remain unavailable until connected to Prometheus.</p>
+        </section>
+
+        <section class="dashboard-grid">
+            <article class="panel architecture-panel" id="architecture">
+                <div class="panel-heading"><div><span class="section-kicker">DELIVERY PIPELINE</span><h2>Secure Deployment Flow</h2></div><span class="panel-badge">PIPELINE</span></div>
+                <div class="pipeline">
+                    <div class="pipeline-step"><div class="pipeline-icon">⌘</div><strong>Source</strong><small>GitHub</small></div>
+                    <div class="pipeline-connector"><span></span></div>
+                    <div class="pipeline-step"><div class="pipeline-icon">✓</div><strong>Test</strong><small>Pytest</small></div>
+                    <div class="pipeline-connector"><span></span></div>
+                    <div class="pipeline-step"><div class="pipeline-icon">⬡</div><strong>Scan</strong><small>Security</small></div>
+                    <div class="pipeline-connector"><span></span></div>
+                    <div class="pipeline-step"><div class="pipeline-icon">▦</div><strong>Deploy</strong><small>Kubernetes</small></div>
+                </div>
+                <div class="pipeline-caption"><span class="pulse-dot"></span> Security checks are part of the delivery workflow</div>
+            </article>
+
+            <article class="panel api-panel">
+                <div class="panel-heading"><div><span class="section-kicker">APPLICATION</span><h2>API Status</h2></div><span class="live-pill"><i></i> LIVE CHECK</span></div>
+                <div class="api-row"><span class="api-symbol">↗</span><div><strong>SentinelOps API</strong><small>Application endpoint</small></div><span class="api-state" id="api-state">Checking</span></div>
+                <div class="api-row"><span class="api-symbol">♡</span><div><strong>Health Endpoint</strong><small>/health</small></div><span class="api-state" id="endpoint-state">Checking</span></div>
+                <div class="api-row"><span class="api-symbol">i</span><div><strong>Application Info</strong><small>/api/v1/info</small></div><span class="api-state">Available</span></div>
+                <a class="text-link" href="/docs" target="_blank" rel="noopener">Explore API documentation <span>↗</span></a>
+            </article>
+        </section>
+
+        <section class="section-block security-section" id="security">
+            <div class="section-heading"><div><span class="section-kicker">BUILT WITH SECURITY IN MIND</span><h2>Security Controls</h2></div><span class="panel-badge">PROJECT CAPABILITIES</span></div>
+            <div class="security-grid">
+                <article class="security-card"><span class="security-icon">⌁</span><div><h3>Secret Detection</h3><p>Gitleaks scans help identify accidentally committed secrets.</p><span class="feature-tag">GITLEAKS</span></div></article>
+                <article class="security-card"><span class="security-icon">⬡</span><div><h3>Container Security</h3><p>Container image scanning is included in the security workflow.</p><span class="feature-tag">IMAGE SCANNING</span></div></article>
+                <article class="security-card"><span class="security-icon">⛨</span><div><h3>Kubernetes Hardening</h3><p>Non-root workloads and restricted container privileges.</p><span class="feature-tag">HARDENED WORKLOADS</span></div></article>
+                <article class="security-card"><span class="security-icon">⇄</span><div><h3>Network Isolation</h3><p>Network policies help control workload communication.</p><span class="feature-tag">NETWORK POLICIES</span></div></article>
+            </div>
+        </section>
+
+        <footer class="footer"><a class="footer-brand" href="#overview">SENTINELOPS <span>◆</span></a><span>Secure delivery. Observable infrastructure.</span><span>BUILT FOR DEVSECOPS</span></footer>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
